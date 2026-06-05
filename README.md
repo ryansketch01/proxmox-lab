@@ -19,19 +19,18 @@ This repo documents the setup and configuration of a personal cybersecurity home
 ## Lab Architecture
 
 ```
-Frank (Windows 11 - Main PC / Splunk Host)
-192.168.1.54
-  ├── Splunk Enterprise 10.2.2
+Main PC (Windows 11 - Splunk Host)
+  ├── Splunk Enterprise
   │   └── malware-lab index (HEC port 8088)
-  └── nginx reverse proxy (192.168.1.54:8088 → 127.0.0.1:8088)
+  └── nginx reverse proxy (LAN_IP:8088 → 127.0.0.1:8088)
 
-Main PC Browser → https://192.168.1.X:8006 (Proxmox Web UI)
+Main PC Browser → https://PROXMOX_IP:8006 (Proxmox Web UI)
 
-Proxmox Host (EliteDesk - 192.168.1.X)
+Proxmox Host (EliteDesk)
 ├── vmbr0 → Home network (internet access)
 ├── vmbr1 → Isolated malware network (no internet)
 ├── REMnux VM (100)
-│   ├── ens18 → 192.168.1.61 (internet via vmbr0)
+│   ├── ens18 → LAN (internet via vmbr0)
 │   ├── ens19 → 192.168.100.1 (isolated via vmbr1)
 │   ├── INetSim → HTTP/HTTPS/SMTP/FTP simulation
 │   ├── dnsmasq → DNS interception (all domains → 192.168.100.1)
@@ -69,17 +68,16 @@ Proxmox Host (EliteDesk - 192.168.1.X)
 
 ## Splunk
 
-- **Host:** Frank (192.168.1.54)
-- **Version:** Splunk Enterprise 10.2.2
 - **Index:** malware-lab
-- **HEC Token:** stored in Bitwarden
+- **HEC Token:** stored in Bitwarden (never commit to repo)
 - **Search:** `index=malware-lab`
 
 ## Security Notes
 
 - FlareVM is **isolated network only** — no direct internet access
 - REMnux is dual-homed — analysis gateway between isolated network and researcher
-- Splunk HEC token stored in Bitwarden — never commit tokens to repo
-- nginx proxy binds only to home network interface (192.168.1.54)
+- All credentials and tokens stored in Bitwarden — never commit to repo
+- nginx proxy binds only to home network interface
 - Always revert FlareVM to `flarevm-clean-isolated` snapshot after each analysis session
 - Malware samples should never be run outside of the isolated vmbr1 network
+- No IP addresses, hostnames, or machine names committed to this repo
