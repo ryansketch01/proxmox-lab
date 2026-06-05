@@ -31,12 +31,12 @@ Proxmox Host (EliteDesk)
 ├── vmbr1 → Isolated malware network (no internet)
 ├── REMnux VM (100)
 │   ├── ens18 → LAN (internet via vmbr0)
-│   ├── ens19 → 192.168.100.1 (isolated via vmbr1)
+│   ├── ens19 → 192.168.x.x (isolated via vmbr1)
 │   ├── INetSim → HTTP/HTTPS/SMTP/FTP simulation
-│   ├── dnsmasq → DNS interception (all domains → 192.168.100.1)
+│   ├── dnsmasq → DNS interception (all domains → 192.168.x.x)
 │   └── inetsim_forwarder.py → Splunk HEC
 └── FlareVM VM (101)
-    └── Ethernet → 192.168.100.2 (isolated vmbr1 only)
+    └── Ethernet → 192.168.x.x (isolated vmbr1 only)
 ```
 
 ## Virtual Machines
